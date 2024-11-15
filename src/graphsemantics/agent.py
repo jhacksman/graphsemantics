@@ -1,6 +1,7 @@
 """
 Agent implementation for semantic layer over graph database.
 """
+import os
 from typing import List, Tuple
 from langchain.agents import AgentExecutor
 from langchain.agents.format_scratchpad import format_to_openai_function_messages
@@ -23,6 +24,10 @@ class SemanticAgent:
             model_name: Name of the OpenAI model to use
             temperature: Temperature parameter for the model
         """
+        if not os.getenv("OPENAI_API_KEY"):
+            raise EnvironmentError(
+                "OPENAI_API_KEY environment variable is required but not set."
+            )
         self.llm = ChatOpenAI(model=model_name, temperature=temperature)
         self.tools = [InformationTool()]
         self.llm_with_tools = self.llm.bind(

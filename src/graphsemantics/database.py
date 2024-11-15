@@ -1,12 +1,17 @@
 """
 Database connection and setup module for graph semantics layer.
 """
+import os
 from langchain_community.graphs import Neo4jGraph
 
 class GraphDatabase:
     def __init__(self):
         """Initialize the graph database connection."""
-        self.graph = Neo4jGraph()
+        self.graph = Neo4jGraph(
+            url=os.getenv("NEO4J_URI"),
+            username=os.getenv("NEO4J_USERNAME"),
+            password=os.getenv("NEO4J_PASSWORD")
+        )
 
     def import_movie_data(self):
         """Import sample movie data into the Neo4j database."""
